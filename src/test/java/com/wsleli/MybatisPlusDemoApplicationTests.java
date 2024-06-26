@@ -1,9 +1,9 @@
 package com.wsleli;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.wsleli.dao.UserDao;
 import com.wsleli.domain.User;
+import com.wsleli.domain.query.UserQuery;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,52 +17,49 @@ class MybatisPlusDemoApplicationTests {
     private UserDao userDao;
 
     @Test
-    void testSave() {
-        User user = new User();
-        user.setName("黑马程序员");
-        user.setPassword("wsleli");
-        user.setAge(12);
-        user.setTel("4006184000");
-        userDao.insert(user);
-    }
+    void testGetAll() {
+        // 方式一:按条件查询
+        // QueryWrapper qw = new QueryWrapper();
+        // qw.lt("age", 18);
+        // List<User> userList = userDao.selectList(qw);
+        // System.out.println(userList);
 
-    @Test
-    void testDelete() {
-        userDao.deleteById(1401856123725713409L);
-    }
+        // 方式二:Lambda格式按条件查询
+        // QueryWrapper<User> qw = new QueryWrapper<User>();
+        // qw.lambda().lt(User::getAge, 10);
+        // List<User> userList = userDao.selectList(qw);
+        // System.out.println(userList);
 
-    @Test
-    void testUpdate() {
-        User user = new User();
-        user.setId(1L);
-        user.setName("Tom888");
-        user.setPassword("tom888");
-        userDao.updateById(user);
-    }
+        // 方式三:lambda格式按条件查询
+        // LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+        // lqw.lt(User::getAge, 10);
+        // List<User> userList = userDao.selectList(lqw);
+        // System.out.println(userList);
 
-    @Test
-    void testGetById() {
-        User user = userDao.selectById(2L);
-        System.out.println(user);
-    }
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
 
-    @Test
-    public void testGetAll() {
-        List<User> userList = userDao.selectList(null);
+        // and，默认不用加
+        // lqw.lt(User::getAge, 30);
+        // lqw.gt(User::getAge, 10);
+
+        // lqw.lt(User::getAge, 30).gt(User::getAge, 10);
+
+
+        // or
+        // lqw.lt(User::getAge, 10);
+        // lqw.gt(User::getAge, 30);
+        // lqw.or();// 变量范围内任意位置
+
+        // lqw.lt(User::getAge, 10).or().gt(User::getAge, 30);
+
+        // 模拟查空值
+        UserQuery uq = new UserQuery();
+        // uq.setAge(10);
+        uq.setAge2(30);
+        lqw.lt(null != uq.getAge2(), User::getAge, uq.getAge2())
+                .gt(null != uq.getAge(), User::getAge, uq.getAge());
+
+        List<User> userList = userDao.selectList(lqw);
         System.out.println(userList);
-    }   // 分页查询
-
-    @Test
-    void testSelectPage() {
-        // 1 创建IPage分页对象,设置分页参数,1为当前页码，3为每页显示的记录数
-        IPage<User> page = new Page<>(1, 3);
-        // 2 执行分页查询
-        userDao.selectPage(page, null);
-        // 3 获取分页结果
-        System.out.println("当前页码值：" + page.getCurrent());
-        System.out.println("每页显示数：" + page.getSize());
-        System.out.println("一共多少页：" + page.getPages());
-        System.out.println("一共多少条数据：" + page.getTotal());
-        System.out.println("数据：" + page.getRecords());
     }
 }
