@@ -1,9 +1,7 @@
 package com.wsleli.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 /**
@@ -29,4 +27,11 @@ public class User {
 
     @TableField(exist = false)
     private Integer online;
+
+    // 逻辑删除字段，标记当前记录是否被删除
+    // @TableLogic(value = "0", delval = "1")
+    private Integer deleted;
+
+    @Version
+    private Integer version;
 }
