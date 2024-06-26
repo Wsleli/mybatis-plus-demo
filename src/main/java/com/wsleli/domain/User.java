@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("tbl_user")
+// @TableName("tbl_user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class User implements Serializable {
 
     private String tel;
 
-    @TableLogic
+    // @TableLogic
     private Integer deleted;
 
     @Version
