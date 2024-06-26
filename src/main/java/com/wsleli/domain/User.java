@@ -1,5 +1,7 @@
 package com.wsleli.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -9,10 +11,19 @@ import lombok.Data;
  * @Date: 2024/06/25 22:40
  */
 @Data
+@TableName("tbl_user")
 public class User {
     private Long id;
+
     private String name;
-    private String password;
+
+    @TableField(value = "password", select = false)
+    private String pwd;
+
     private Integer age;
+
     private String tel;
+
+    @TableField(exist = false)
+    private Integer online;
 }

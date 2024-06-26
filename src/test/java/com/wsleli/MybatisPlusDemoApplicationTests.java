@@ -98,7 +98,7 @@ class MybatisPlusDemoApplicationTests {
 //-----------------------------------------------------------------------------------
 
         // 查询条件
-        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+        // LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
         // lqw.eq(User::getName, "Jerry").eq(User::getPassword, "jerry");
         // User loginUser = userDao.selectOne(lqw);
         // System.out.println(loginUser);
@@ -117,7 +117,13 @@ class MybatisPlusDemoApplicationTests {
          * isAsc：是否为升序，true为升序，false为降序
          * columns：需要操作的列
          */
-        lqw.orderBy(true, false, User::getId);
+        // lqw.orderBy(true, false, User::getId);
+        // List<User> userList = userDao.selectList(lqw);
+        // System.out.println(userList);
+
+//-----------------------------------------------------------------------------------
+
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
         List<User> userList = userDao.selectList(lqw);
         System.out.println(userList);
     }
