@@ -17,3 +17,6 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: off # 关闭mybatisplus启动图标
+    db-config:
+      id-type: assign_id
+      table-prefix: tbl_
