@@ -1,6 +1,6 @@
 package com.wsleli;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.wsleli.dao.UserDao;
 import com.wsleli.domain.User;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 class MybatisPlusDemoApplicationTests {
@@ -72,14 +71,14 @@ class MybatisPlusDemoApplicationTests {
         // lqw.select(User::getId,User::getName,User::getAge);
 
         // 非lambda格式
-        QueryWrapper<User> lqw = new QueryWrapper<User>();
+        // QueryWrapper<User> lqw = new QueryWrapper<User>();
         // lqw.select("id", "name", "age", "tel");
         // List<User> userList = userDao.selectList(lqw);
         // System.out.println(userList);
 
         // 聚合查询，分组查询
-        lqw.select("count(*) as count,tel");
-        lqw.groupBy("tel");
+        // lqw.select("count(*) as count,tel");
+        // lqw.groupBy("tel");
         // SELECT count(*) as count FROM user
 
         // lqw.select("max(age) as maxAge");
@@ -93,7 +92,33 @@ class MybatisPlusDemoApplicationTests {
 
         // lqw.select("avg(age) as avgAge");
         // SELECT avg(age) as avgAge FROM user
-        List<Map<String, Object>> userList = userDao.selectMaps(lqw);
+        // List<Map<String, Object>> userList = userDao.selectMaps(lqw);
+        // System.out.println(userList);
+
+//-----------------------------------------------------------------------------------
+
+        // 查询条件
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+        // lqw.eq(User::getName, "Jerry").eq(User::getPassword, "jerry");
+        // User loginUser = userDao.selectOne(lqw);
+        // System.out.println(loginUser);
+
+        // SELECT id,name,password,age,tel FROM user WHERE (age BETWEEN ? AND ?)
+        // lqw.between(User::getAge, 10, 30);
+        // List<User> userList = userDao.selectList(lqw);
+
+        // SELECT id,name,password,age,tel FROM user WHERE (name LIKE ?)
+        // lqw.likeLeft(User::getName, "J");
+        // List<User> userList = userDao.selectList(lqw);
+
+        /**
+         * condition：条件，返回boolean，
+         * 当condition为true，进行排序，如果为false，则不排序
+         * isAsc：是否为升序，true为升序，false为降序
+         * columns：需要操作的列
+         */
+        lqw.orderBy(true, false, User::getId);
+        List<User> userList = userDao.selectList(lqw);
         System.out.println(userList);
     }
 }
